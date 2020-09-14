@@ -9,6 +9,7 @@ import com.example.demo.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping(path = {"/test","/dev"})
+//@Profile()
 public class TestController {
     
     @Autowired
@@ -34,7 +36,7 @@ public class TestController {
         try {
             throw new Exception("手动抛异常...");
         } catch (Exception e) {
-            result = ReturnResponse.getErrorReturn(e,2);
+            result = ReturnResponse.getErrorReturn(e);
             log.error(e.getMessage(),e);
         }
         return result;
