@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.aop.annotation.LogAnnotation;
+import com.example.demo.config.A;
+import com.example.demo.config.ConfigFactory;
 import com.example.demo.entity.StatisticsReturnEntity;
 import com.example.demo.response.ReturnResponse;
 import com.example.demo.service.TestService;
@@ -29,22 +31,31 @@ public class TestController {
     @Autowired
     TestService service;
 
+    @Autowired
+    A xxx;
+
     @LogAnnotation(desc = "调用fun1...")
     @RequestMapping(path = "/fun1")
     public StatisticsReturnEntity fun1(@RequestBody String str){
-        StatisticsReturnEntity result = ReturnResponse.getEmptyReturn(10);
-        try {
+        StatisticsReturnEntity result = ReturnResponse.getEmptyReturn();
+        /*try {
             throw new Exception("手动抛异常...");
         } catch (Exception e) {
             result = ReturnResponse.getErrorReturn(e);
             log.error(e.getMessage(),e);
-        }
+        }*/
         return result;
     }
 
     @PostMapping(path = "/fun2")
     public String fun2(){
         return service.service("xyz");
+    }
+
+    @LogAnnotation(desc = "调用fun3")
+    @RequestMapping(path = "/fun3")
+    public Object fun3(){
+        return ConfigFactory.getBean("esPort");
     }
 
 

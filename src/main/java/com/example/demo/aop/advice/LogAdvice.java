@@ -85,10 +85,13 @@ public class LogAdvice {
         long startTime = System.currentTimeMillis();
         Object returnObject = joinPoint.proceed();/*切点执行，由此开始执行before,after return,after方法*/
         long endTime = System.currentTimeMillis();
-        StatisticsReturnEntity returnEntity = (StatisticsReturnEntity) returnObject;
-        returnEntity.setCostTime((int) (endTime - startTime));/**将返回的结果对象织入时间属性*/
+        if (returnObject instanceof StatisticsReturnEntity){
+            StatisticsReturnEntity returnEntity = (StatisticsReturnEntity) returnObject;
+            returnEntity.setCostTime((int) (endTime - startTime));/**将返回的结果对象织入时间属性*/
+            return returnEntity;
+        }
         log.info("The method invoke cost time: {} ms",(endTime - startTime));
-        return returnEntity;
+        return returnObject;
     }
 
     /**

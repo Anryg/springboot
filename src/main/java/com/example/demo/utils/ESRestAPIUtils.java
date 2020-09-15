@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.config.ConfigFactory;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
@@ -10,6 +11,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +26,9 @@ import java.util.List;
  */
 @Slf4j
 public class ESRestAPIUtils {
+    @Autowired
+    private static String[] esHosts;
+    private static int esPort = (int)ConfigFactory.getBean("esPort");
     private static volatile RestClientBuilder restClientBuilder;
     private static volatile RequestOptions commonOptions;
 
@@ -104,9 +111,8 @@ public class ESRestAPIUtils {
     private static List<HttpHost> assembleESHost() {
         ArrayList<HttpHost> esHostList = new ArrayList<>();
         //String[] esAddrArray = ConfigUtils.getSingleConf("es/cluster.nodes").split(",");
-        String[] esAddrArray = new String[]{"hdp01","hdp02","hdp03"};
-        for (String es : esAddrArray)
-            esHostList.add(new HttpHost(es, Integer.valueOf("9201")));
+        for (String es : esHosts)
+            esHostList.add(new HttpHost(es, esPort));
         return esHostList;
     }
 }
