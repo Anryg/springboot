@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 @Configuration(value = "configs")
 @Slf4j
 public class Configurations {
-    private ConsulClient client = new ConsulClient("hdp04");
+    private ConsulClient client = new ConsulClient("192.168.211.109");
 
     /**
      * @DESC: 获取某个单独配置
@@ -48,9 +48,4 @@ public class Configurations {
         return Integer.valueOf(getSingleConf("es/cluster.http.port"));
     }
 
-    @Bean("xxx")
-    public int xxx(){
-
-        return 1;
-    }
 }

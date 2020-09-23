@@ -69,12 +69,12 @@ public class LogAdvice {
     }
 
     /**
-     * @DESC: 方法抛出异常之后,在日志端打印栈信息
+     * @DESC: 方法抛出异常之后的处理方式，因为已经定义了GlobalExceptionHandler，这里就不再需要定义
      * */
-    @AfterThrowing(value = "com.example.demo.aop.pointcut.PointCut.logPointCut()",throwing = "e")
+/*    @AfterThrowing(value = "com.example.demo.aop.pointcut.PointCut.logPointCut()",throwing = "e")
     public void afterThrow(Throwable e){
-        log.error("This is after throw from LogAdvice...{}",e.getStackTrace());
-    }
+        log.error("This is after throw from LogAdvice...{}",e.getMessage());
+    }*/
 
     /**
      * @DESC: 环绕整个方法,用来统计方法执行时间

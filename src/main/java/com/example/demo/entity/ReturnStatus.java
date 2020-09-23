@@ -8,7 +8,8 @@ package com.example.demo.entity;
 public enum ReturnStatus {
     OK(200),/**请求成功*/
     ERROR(500),/**请求失败*/
-    NOTFOUND(404),/**请求结果为空*/
+    PARASERROR(400), /**请求参数错误*/
+    PATHNOTFOUND(404),/**请求不存在的路径*/
     UNAUTHORIZED(401);/**请求没有权限*/
 
     public int code;

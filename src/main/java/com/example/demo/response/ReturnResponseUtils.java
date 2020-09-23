@@ -1,6 +1,7 @@
 package com.example.demo.response;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.ReturnStatus;
 import com.example.demo.entity.StatisticsReturnEntity;
@@ -10,7 +11,7 @@ import com.example.demo.entity.StatisticsReturnEntity;
  * @Auther: Anryg
  * @Date: 2020/9/10 17:46
  */
-public class ReturnResponse {
+public class ReturnResponseUtils {
 
     /**
      * @DESC: 生成正常的对象返回
@@ -23,12 +24,27 @@ public class ReturnResponse {
     }
 
     /**
-     * @DESC: 生成结果为空的对象
+     * @DESC: 生成请求路径错误时返回的对象
      * */
-    public static StatisticsReturnEntity getEmptyReturn(){
+    public static StatisticsReturnEntity getErrorPathReturn(){
         StatisticsReturnEntity<JSON> result = new StatisticsReturnEntity<>();
         result.setData(new JSONObject(0));
-        result.setReturnCode(ReturnStatus.NOTFOUND.code);
+        result.setReturnCode(ReturnStatus.PATHNOTFOUND.code);
+        return result;
+    }
+
+    /**
+     * @DESC: 生成请求过程中参数错误的对象
+     * */
+    public static StatisticsReturnEntity getErrorParasReturn(){
+        StatisticsReturnEntity<JSON> result = new StatisticsReturnEntity<>();
+        JSONArray jSONArray = new JSONArray();
+        JSONObject jSONObject = new JSONObject();
+        jSONObject.put("msg", "request paras is illegal,please check it");
+        jSONArray.add(jSONObject);
+        result.setData(jSONArray);
+        result.setReturnCode(ReturnStatus.PARASERROR.code);
+        //result.setCostTime(time+" ms");
         return result;
     }
 

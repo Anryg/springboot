@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.io.IOException;
+
 /**
  * @DESC: ES查询service
  * @Auther: Anryg
@@ -7,5 +9,5 @@ package com.example.demo.service;
  */
 public interface IESService {
 
-    String simpleQuery(String field);
+    String simpleQuery(String index,String queryJson) throws IOException;
 }

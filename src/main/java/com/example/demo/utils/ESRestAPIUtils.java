@@ -1,7 +1,9 @@
 package com.example.demo.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.config.ConfigFactory;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -14,9 +16,11 @@ import org.elasticsearch.client.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,10 +28,10 @@ import java.util.List;
  * @Auther: Anryg
  * @Date: 2020/9/11 16:54
  */
+@Component
 @Slf4j
 public class ESRestAPIUtils {
-    @Autowired
-    private static String[] esHosts;
+    private static String[] esHosts /*= (String[])ConfigFactory.getBean("esHosts")*/;
     private static int esPort = (int)ConfigFactory.getBean("esPort");
     private static volatile RestClientBuilder restClientBuilder;
     private static volatile RequestOptions commonOptions;
@@ -76,10 +80,32 @@ public class ESRestAPIUtils {
     }
 
     /**
+     * @DESC: 普通查询，非聚合方式。根据提供的索引名，以及查询语句返回查询结果的json array
+     * */
+    public static JSON searchByQueryJson(String index, String queryJson) throws IOException {
+        JSONObject responseJSON = null;
+        //try {
+            responseJSON = JSON.parseObject(query(queryJson,"POST",index + "/_search"));
+        /*} catch (Exception e) {
+            log.error("查询{}报错...",queryJson);
+        }*/
+        JSONArray hitsArray = JSON.parseArray(JSON.parseObject(responseJSON.getString("hits")).getString("hits"));
+        int totalHits = hitsArray.size();
+        JSONArray resultArray = new JSONArray(totalHits);
+        Iterator<Object> hitsItor = hitsArray.iterator();
+        while (hitsItor.hasNext()){
+            JSONObject nextJson = JSON.parseObject(hitsItor.next().toString());
+            JSONObject targetJson = JSON.parseObject(nextJson.getString("_source"));
+            resultArray.add(targetJson);
+        }
+        return resultArray;
+    }
+
+    /**
      * @return : 返回请求后的json字符串
      * @DESC: 可接受所有对于ES的查询操作，包括数据写入、删除、一般的条件查询和聚合查询
      */
-    public static String query(String queryJson, String method, String endpoint) {
+    private static String query(String queryJson, String method, String endpoint) throws IOException {
         String resultJson = "";
         RestClient restClient = ESRestAPIUtils.getBuilder().build();
         //     .setMaxRetryTimeoutMillis(10 * 60 * 1000)/**设置查询超时时长，默认30秒*/.build();
@@ -93,9 +119,9 @@ public class ESRestAPIUtils {
             response = restClient.performRequest(request);
             resultJson = EntityUtils.toString(response.getEntity(), "UTF-8");
             return resultJson;
-        } catch (IOException e) {
+        /*} catch (IOException e) {
             log.error("查询请求失败..." + queryJson, e);
-            return resultJson;
+            return resultJson;*/
         } finally {
             try {
                 restClient.close();
@@ -106,11 +132,20 @@ public class ESRestAPIUtils {
     }
 
     /**
+     * @DESC: 因为autowire的不能作用于静态成员变量
+     * */
+    @Autowired
+    public void setEsHosts(String[] esHosts) {
+        this.esHosts = esHosts;
+    }
+
+    /**
      * @DESC: 组装ES的hosts为HttpHost
      */
     private static List<HttpHost> assembleESHost() {
         ArrayList<HttpHost> esHostList = new ArrayList<>();
         //String[] esAddrArray = ConfigUtils.getSingleConf("es/cluster.nodes").split(",");
+        System.out.println("=========:" + esHosts);
         for (String es : esHosts)
             esHostList.add(new HttpHost(es, esPort));
         return esHostList;

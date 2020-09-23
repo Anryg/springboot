@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * @DESC:
+ * @DESC: 通过这种方式直接从spring容器中获取已经实例化好了的bean对象
  * @Auther: Anryg
  * @Date: 2020/9/15 17:49
  */
