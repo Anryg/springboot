@@ -14,9 +14,13 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,15 +32,35 @@ import java.util.List;
  * @Auther: Anryg
  * @Date: 2020/9/11 16:54
  */
-@Component
+@Component(value = "esRestAPIUtils")
+@ConfigurationProperties(value = "es.config")
+@RefreshScope /**确保热生效*/
 @Slf4j
 public class ESRestAPIUtils {
-    private static String[] esHosts /*= (String[])ConfigFactory.getBean("esHosts")*/;
-    private static int esPort = (int)ConfigFactory.getBean("esPort");
+    private static String esHosts /*= (String[])ConfigFactory.getBean("esHosts")*/;
+    private static int esPort;
     private static volatile RestClientBuilder restClientBuilder;
     private static volatile RequestOptions commonOptions;
 
-    private ESRestAPIUtils(){/**确保模式*/}
+    public/*必须public，原因待研究*/ ESRestAPIUtils(){/**确保模式*/}
+
+    @Value(value = "${elasticsearch.nodes}") /**不能作用于静态变量，也不能作用于静态方法，无法注入*/
+    public void setEsHosts(String esHosts){
+        this.esHosts = esHosts;
+    }
+
+    @Value(value = "${elasticsearch.http.port}")
+    public void setEsPort(int esPort){
+        this.esPort = esPort;
+    }
+
+    /**
+     * @DESC: 因为autowire的不能作用于静态成员变量
+     * */
+/*    @Autowired
+    public void setEsHosts(String[] esHosts) {
+        this.esHosts = esHosts;
+    }*/
 
     /**
      * @DESC: 获取RestClientBuilder对象，懒汉模式，单列模式
@@ -45,13 +69,9 @@ public class ESRestAPIUtils {
         if (null == restClientBuilder){
             synchronized (ESRestAPIUtils.class){
                 if (null == restClientBuilder){
-                    try {
-                        restClientBuilder = RestClient.builder(assembleESHost().toArray(new HttpHost[3]));
-                        Header[] header = new Header[]{new BasicHeader("header", "value")};
-                        restClientBuilder.setDefaultHeaders(header);
-                    } catch (Exception e) {
-                        log.error("",e);
-                    }
+                    restClientBuilder = RestClient.builder(assembleESHost().toArray(new HttpHost[3]));
+                    Header[] header = new Header[]{new BasicHeader("header", "value")};
+                    restClientBuilder.setDefaultHeaders(header);
                 }
             }
         }
@@ -65,14 +85,10 @@ public class ESRestAPIUtils {
         if (null == commonOptions){
             synchronized (ESRestAPIUtils.class){
                 if (null == commonOptions){
-                    try {
-                        RequestOptions.Builder requestOptionBuilder = RequestOptions.DEFAULT.toBuilder();
-                        requestOptionBuilder.setHttpAsyncResponseConsumerFactory(
-                                new HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory(800 * 1024 * 1024));
-                        commonOptions = requestOptionBuilder.build();
-                    } catch (Exception e) {
-                        log.error("",e);
-                    }
+                    RequestOptions.Builder requestOptionBuilder = RequestOptions.DEFAULT.toBuilder();
+                    requestOptionBuilder.setHttpAsyncResponseConsumerFactory(
+                            new HttpAsyncResponseConsumerFactory.HeapBufferedResponseConsumerFactory(800 * 1024 * 1024));
+                    commonOptions = requestOptionBuilder.build();
                 }
             }
         }
@@ -123,20 +139,8 @@ public class ESRestAPIUtils {
             log.error("查询请求失败..." + queryJson, e);
             return resultJson;*/
         } finally {
-            try {
-                restClient.close();
-            } catch (IOException e) {
-                log.error("Rest客户端关闭失败...", e);
-            }
+            restClient.close();
         }
-    }
-
-    /**
-     * @DESC: 因为autowire的不能作用于静态成员变量
-     * */
-    @Autowired
-    public void setEsHosts(String[] esHosts) {
-        this.esHosts = esHosts;
     }
 
     /**
@@ -145,9 +149,7 @@ public class ESRestAPIUtils {
     private static List<HttpHost> assembleESHost() {
         ArrayList<HttpHost> esHostList = new ArrayList<>();
         //String[] esAddrArray = ConfigUtils.getSingleConf("es/cluster.nodes").split(",");
-        System.out.println("=========:" + esHosts);
-        for (String es : esHosts)
-            esHostList.add(new HttpHost(es, esPort));
+        for (String es : esHosts.split(",")) esHostList.add(new HttpHost(es, esPort));
         return esHostList;
     }
 }

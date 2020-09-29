@@ -20,6 +20,8 @@
 		<es.version>7.6.2</es.version>
 		<json.version>1.2.58</json.version>
 		<consul.version>1.4.5</consul.version>
+		<spring-cloud.version>2.2.4.RELEASE</spring-cloud.version>
+		<yaml.version>1.27</yaml.version>
 	</properties>
 
 	<dependencies>
@@ -73,6 +75,27 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!--添加spring cloud部分-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId><!--consul服务发现-->
+			<version>${spring-cloud.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-config</artifactId> <!--consul配置中心-->
+			<version>${spring-cloud.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-bus</artifactId>
+			<version>${spring-cloud.version}</version>
+		</dependency>-->
+		<!--********************-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -83,11 +106,6 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

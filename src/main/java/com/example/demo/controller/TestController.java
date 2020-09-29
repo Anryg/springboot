@@ -9,6 +9,9 @@ import com.example.demo.service.IESService;
 import com.example.demo.service.TestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +27,13 @@ import java.io.IOException;
 @RestController
 @Slf4j
 @RequestMapping(path = {"/test","/dev"})
+@ConfigurationProperties(value = "config2")
+@RefreshScope/**配置修改热生效*/
 //@Profile()
 public class TestController {
+
+    @Value(value = "${kafka.hosts}")
+    private String kafka;
     
     @Autowired
     TestService service;
@@ -64,6 +72,18 @@ public class TestController {
         String resultJson = esService.simpleQuery(index, "");
         result = ReturnResponseUtils.getSuccessReturn(JSON.parseArray(resultJson));
         return result;
+    }
+
+    @RequestMapping(path = "/fun5")
+    public String fun5(){
+        Object result = ConfigFactory.getBean("xxxx");
+        log.info("This is fun5..." + result);
+        return result.toString();
+    }
+
+    @RequestMapping(path = "/fun6")
+    public String fun6(){
+        return kafka;
     }
 
 

@@ -1,0 +1,9 @@
+server:  #ÅäÖÃ¸úspring bootÏà¹ØµÄÅäÖÃ
+    port: 7777
+management:
+    health:
+        elasticsearch:
+            enabled: false
+spring:
+    application:
+        name: spring-boot-demo

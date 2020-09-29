@@ -1,0 +1,19 @@
+spring: #pom配置了spring cloud的config包之后，关于spring cloud的配置部分就只识别bootstrap这个配置文件
+    cloud: #spring cloud 配置部分
+        consul:
+            host: hdp04  #consul地址
+            port: 8500
+            discovery: #服务发现配置
+                prefer-ip-address: true  #识别服务主机以IP优先
+                enabled: true
+                register: true
+                health-check-interval: 5s
+                instance-id: ${spring.application.name}:${server.port}
+            config: #配置中心配置
+                prefix: spring-cloud #必须指定
+                enabled: true
+                format: yaml #读取key/value形式的配置文件
+                name: config #consul中二级目录，覆盖${spring.application.name}
+                data-key: data #yaml内容对应的key
+                watch:
+                    enabled: true #监听配置是否修改
