@@ -33,7 +33,7 @@ import java.util.List;
  * @Date: 2020/9/11 16:54
  */
 @Component(value = "esRestAPIUtils")
-@ConfigurationProperties(value = "es.config")
+@ConfigurationProperties(value = "es.config"/*必须指定一个值*/)
 @RefreshScope /**确保热生效*/
 @Slf4j
 public class ESRestAPIUtils {
@@ -42,14 +42,14 @@ public class ESRestAPIUtils {
     private static volatile RestClientBuilder restClientBuilder;
     private static volatile RequestOptions commonOptions;
 
-    public/*必须public，原因待研究*/ ESRestAPIUtils(){/**确保模式*/}
+    public/*必须public，作为bean，构造方法必须对容器可见*/ ESRestAPIUtils(){}
 
     @Value(value = "${elasticsearch.nodes}") /**不能作用于静态变量，也不能作用于静态方法，无法注入*/
     public void setEsHosts(String esHosts){
         this.esHosts = esHosts;
     }
 
-    @Value(value = "${elasticsearch.http.port}")
+    @Value(value = "${elasticsearch.http_port}")
     public void setEsPort(int esPort){
         this.esPort = esPort;
     }

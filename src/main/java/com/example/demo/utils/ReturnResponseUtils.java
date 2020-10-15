@@ -1,10 +1,10 @@
-package com.example.demo.response;
+package com.example.demo.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.ReturnStatus;
-import com.example.demo.entity.StatisticsReturnEntity;
+import com.example.demo.model.ReturnStatus;
+import com.example.demo.model.StatisticsReturnEntity;
 
 /**
  * @DESC: 根据正常或者错误返回对象

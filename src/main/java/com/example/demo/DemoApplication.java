@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 
 @SpringBootApplication  /**默认会扫描该类存在的包以及其子包下所有的类，并根据其注解进行初始化、实例化、装载等操作*/
-@EnableDiscoveryClient
+@EnableDiscoveryClient /**开发服务发现，作为客户端注册到consul*/
 public class DemoApplication {
 
 	public static void main(String[] args) {

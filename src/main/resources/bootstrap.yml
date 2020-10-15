@@ -10,7 +10,7 @@ spring: #pom配置了spring cloud的config包之后，关于spring cloud的配�
                 health-check-interval: 5s
                 instance-id: ${spring.application.name}:${server.port}
             config: #配置中心配置
-                prefix: spring-cloud #必须指定
+                prefix: spring-cloud #必须指定,如果不指定默认为config
                 enabled: true
                 format: yaml #读取key/value形式的配置文件
                 name: config #consul中二级目录，覆盖${spring.application.name}

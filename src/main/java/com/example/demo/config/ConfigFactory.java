@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
  * @Auther: Anryg
  * @Date: 2020/9/15 17:49
  */
+@Deprecated
 @Component
 public class ConfigFactory implements ApplicationContextAware {
     private static ApplicationContext applicationContext;

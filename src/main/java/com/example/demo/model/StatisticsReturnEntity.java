@@ -1,10 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.context.annotation.Bean;
 
 /**
  * @DESC: 封装DNS统计结果的对象

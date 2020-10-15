@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 /**
  * @DESC: 定义页面请求的返回状态值
