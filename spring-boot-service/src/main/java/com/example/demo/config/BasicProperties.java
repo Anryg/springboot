@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
 /**
- * @DESC:
+ * @DESC: 项目中需要用到的组件基础配置
  * @Auther: Anryg
  * @Date: 2020/10/10 14:47
  */

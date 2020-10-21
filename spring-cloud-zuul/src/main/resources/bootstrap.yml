@@ -1,4 +1,4 @@
-spring:
+spring: #定义spring cloud配置
     cloud:
         consul:
             host: hdp04
@@ -9,9 +9,9 @@ spring:
                 register: true
                 health-check-interval: 5s
                 service-name: ${spring.application.name}
-                instance-id: ${spring.application.name}:${server.port}
+                instance-id: ${spring.application.name}:${server.port}:${spring.cloud.client.hostname}
 zuul:
     routes:
-        muti-service:
-            path: /**
+        muti-service: #自定义的名字
+            path: /**  #定义访问入口路径
             serviceId: spring-boot-service #定义需要被发现服务的application name，注意不是instance id,多个服务用相同的application name但是instance id不同

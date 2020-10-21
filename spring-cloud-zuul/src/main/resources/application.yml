@@ -1,10 +1,9 @@
-server:
-    port: 7778
+server: #定义spring boot配置
+    port: 7777   #所有http请求入口
 
 spring:
     application:
-        name: spring-cloud-zuul
-management:
+        name: spring-cloud-zuul  #入口服务名字
     endpoints:
         web:
             exposure:

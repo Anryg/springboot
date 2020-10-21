@@ -8,7 +8,7 @@ spring: #pom配置了spring cloud的config包之后，关于spring cloud的配�
                 enabled: true
                 register: true
                 health-check-interval: 5s
-                instance-id: ${spring.application.name}:${server.port}
+                instance-id: ${spring.application.name}:${server.port}:${spring.cloud.client.hostname} #确定唯一id
                 service-name: ${spring.application.name}
             config: #配置中心配置
                 prefix: spring-cloud #必须指定,如果不指定默认为config

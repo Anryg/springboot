@@ -1,5 +1,5 @@
 server: #For spring boot config only
-    port: ${port}
+    port: 8888 #也可以通过变量方式${port}传入，如：java -Dport=9999
 management:
     endpoints:
         web:
@@ -11,7 +11,7 @@ management:
             show-details: always
     health:
         elasticsearch:
-            enabled: false
+            enabled: false #在引入spring-boot-starter-data-elasticsearch后spring启动后默认会对es做检查
 spring:
     application:
         name: spring-boot-service #muti service must be the same name but different instance id

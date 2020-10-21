@@ -2,7 +2,6 @@ package com.example.demo.config;
 
 import com.ecwid.consul.v1.ConsulClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
