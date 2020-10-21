@@ -1,0 +1,17 @@
+server: #For spring boot config only
+    port: ${port}
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*" #Default for only health and info, open all now
+            base-path: /actuator       #default monitor root path
+    endpoint:
+        health:
+            show-details: always
+    health:
+        elasticsearch:
+            enabled: false
+spring:
+    application:
+        name: spring-boot-service #muti service must be the same name but different instance id

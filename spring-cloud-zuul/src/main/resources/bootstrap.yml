@@ -1,0 +1,17 @@
+spring:
+    cloud:
+        consul:
+            host: hdp04
+            port: 8500
+            discovery:
+                prefer-ip-address: true  #识别服务主机以IP优先
+                enabled: true
+                register: true
+                health-check-interval: 5s
+                service-name: ${spring.application.name}
+                instance-id: ${spring.application.name}:${server.port}
+zuul:
+    routes:
+        muti-service:
+            path: /**
+            serviceId: spring-boot-service #定义需要被发现服务的application name，注意不是instance id,多个服务用相同的application name但是instance id不同

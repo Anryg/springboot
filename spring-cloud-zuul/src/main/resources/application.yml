@@ -1,0 +1,14 @@
+server:
+    port: 7778
+
+spring:
+    application:
+        name: spring-cloud-zuul
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    endpoint:
+        health:
+            show-details: always

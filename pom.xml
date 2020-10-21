@@ -8,11 +8,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>spring-boot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging><!--必须改为jar，默认为pom，会导致application.properties配置无效-->
+	<modules>
+		<module>spring-cloud-zuul</module>
+		<module>spring-boot-service</module>
+	</modules>
+	<packaging>pom</packaging><!--必须改为jar，默认为pom，会导致application.properties配置无效-->
 	<modelVersion>4.0.0</modelVersion>
-	<name>demo</name>
+	<name>spring-boot</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -22,6 +26,7 @@
 		<consul.version>1.4.5</consul.version>
 		<spring-cloud.version>2.2.4.RELEASE</spring-cloud.version>
 		<yaml.version>1.27</yaml.version>
+		<mysql.version>5.1.23</mysql.version>
 	</properties>
 
 	<dependencies>
@@ -88,8 +93,29 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
+			<artifactId>spring-boot-configuration-processor</artifactId> <!--可能不需要-->
 		</dependency>
+		<!--spring data jdb用jdbc方式访问RDBMS-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP</artifactId><!--暂时用Druid连接池-->
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency> <!--20190528添加数据库连接池-->
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+		<!--///////////////////////-->
 		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-consul-bus</artifactId>
