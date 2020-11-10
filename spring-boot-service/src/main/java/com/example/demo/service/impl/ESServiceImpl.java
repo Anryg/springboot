@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.service.IESService;
-import com.example.demo.utils.ESRestAPIUtils;
+import com.example.demo.dao.utils.ESRestAPIUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

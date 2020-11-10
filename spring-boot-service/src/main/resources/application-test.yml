@@ -1,6 +1,9 @@
 server: #For spring boot config only
     port: 8888 #也可以通过变量方式${port}传入，如：java -Dport=9999
 management:
+    health:
+        elasticsearch:
+            enabled: false #在引入spring-boot-starter-data-elasticsearch后spring启动后默认会对es做检查
     endpoints:
         web:
             exposure:
@@ -9,9 +12,11 @@ management:
     endpoint:
         health:
             show-details: always
-    health:
-        elasticsearch:
-            enabled: false #在引入spring-boot-starter-data-elasticsearch后spring启动后默认会对es做检查
+
 spring:
+    boot:
+        admin:
+            client:
+                url: http://hdp01:7777  #spring boot admin client配置地址指向admin server的运行地址，所有服务都指向这个地址
     application:
         name: spring-boot-service #muti service must be the same name but different instance id

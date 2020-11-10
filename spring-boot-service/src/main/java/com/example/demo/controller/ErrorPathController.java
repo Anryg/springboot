@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.aop.annotation.LogAnnotation;
+import com.example.demo.model.ReturnResponseUtils;
 import com.example.demo.model.StatisticsReturnEntity;
-import com.example.demo.utils.ReturnResponseUtils;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,6 @@ public class ErrorPathController implements ErrorController {
     public StatisticsReturnEntity<JSON> errorPathReturn(){
         return ReturnResponseUtils.getErrorPathReturn();
     }
-
 
     @Override
     public String getErrorPath() {

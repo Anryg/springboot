@@ -4,14 +4,33 @@ spring: #定义spring cloud配置
             host: hdp04
             port: 8500
             discovery:
-                prefer-ip-address: true  #识别服务主机以IP优先
+                prefer-ip-address: false  #识别服务主机以IP优先
                 enabled: true
                 register: true
                 health-check-interval: 5s
                 service-name: ${spring.application.name}
                 instance-id: ${spring.application.name}:${server.port}:${spring.cloud.client.hostname}
-zuul:
+
+zuul:  #根据每次请求次数平均路由,需要进行服务发现
+    #ignored-services: '*' #会导致zuul服务过多的debug日志
     routes:
         muti-service: #自定义的名字
-            path: /**  #定义访问入口路径
+            path: /business/**  #定义业务请求访问入口路径，不能定义/**，因为spring boot admin的URL入口为: http://ip:port/business,防止将这个url也进行了路由
             serviceId: spring-boot-service #定义需要被发现服务的application name，注意不是instance id,多个服务用相同的application name但是instance id不同
+            strip-prefix: true  #将请求发送到具体的服务时，忽略前缀，默认为true
+
+#zuul:
+#    routes:  根据业务进行路由，不需要进行服务发现
+#        service01: #业务1
+#            path: /business1/**
+#            url: http://hdp02.pcl-test.com:8888/test/fun6
+#        service02: #业务2
+#            path: /business2/**
+#            url: http://hdp03.pcl-test.com:8888/test/fun8
+#        service03: #业务3
+#            path: /business3/**
+#            url: http://hdp04.pcl-test.com:8888/test/fun9
+
+logging: #定义zuul的日志等级
+    level:
+        com.netflix.loadbalancer.LoadBalancerContext: debug #默认zuul网关的日志输出为info，每次http请求过来，正常情况下都没有日志显示，需要打开debug模式，但是又不能把所有类的debug模式打开，那样显示内容太多，现在只打开一个特定类的debug模式，可以清楚看到每个请求被负载到哪个服务器上了

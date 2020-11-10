@@ -22,8 +22,6 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-
-
     /**
      * @DESC:
      * */

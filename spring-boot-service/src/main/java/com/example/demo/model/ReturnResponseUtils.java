@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

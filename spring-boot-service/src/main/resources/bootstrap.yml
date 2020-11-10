@@ -4,7 +4,7 @@ spring: #pom配置了spring cloud的config包之后，关于spring cloud的配�
             host: hdp04  #consul地址
             port: 8500
             discovery: #服务发现配置
-                prefer-ip-address: true  #识别服务主机以IP优先
+                prefer-ip-address: false  #识别服务主机以IP优先
                 enabled: true
                 register: true
                 health-check-interval: 5s

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
- * @DESC:
+ * @DESC: 通过读取consul上的配置来覆盖默认的MySQL配置项
  * @Auther: Anryg
  * @Date: 2020/10/16 19:02
  */
@@ -24,4 +24,14 @@ public class MysqlProperty {
     private String url;
     private String username;
     private String password;
+
+    @Bean
+    public DataSource createDataSource(){
+        DruidDataSource ds = new DruidDataSource();
+        ds.setDriverClassName(driver_name);
+        ds.setUrl(url);
+        ds.setUsername(username);
+        ds.setPassword(password);
+        return ds;
+    }
 }

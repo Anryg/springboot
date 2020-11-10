@@ -2,7 +2,7 @@ package com.example.demo.aop.exception;
 
 import com.alibaba.fastjson.JSONArray;
 import com.example.demo.model.StatisticsReturnEntity;
-import com.example.demo.utils.ReturnResponseUtils;
+import com.example.demo.model.ReturnResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

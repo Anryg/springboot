@@ -5,7 +5,7 @@ import com.example.demo.aop.annotation.LogAnnotation;
 import com.example.demo.config.ConfigFactory;
 import com.example.demo.config.ElasticsearchProperty;
 import com.example.demo.model.StatisticsReturnEntity;
-import com.example.demo.utils.ReturnResponseUtils;
+import com.example.demo.model.ReturnResponseUtils;
 import com.example.demo.service.IESService;
 import com.example.demo.service.TestService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +86,19 @@ public class TestController {
     public String fun6(){
         return esProperty.getName();
     }
+
+    @LogAnnotation(desc = "调用fun8...")
+    @RequestMapping(path = "/fun8")
+    public String fun8(){
+        return "fun8";
+    }
+
+    @LogAnnotation(desc = "调用fun9...")
+    @RequestMapping(path = "/fun9")
+    public String fun9(){
+        return "fun9";
+    }
+
 
     @LogAnnotation(desc = "调用fun7...")
     @RequestMapping(path = "/fun7")

@@ -2,12 +2,21 @@ server: #定义spring boot配置
     port: 7777   #所有http请求入口
 
 spring:
+    boot:
+        admin:
+            discovery:
+                #ignored-services: consul,config*  #监控中需要忽略的，但是已经在consul中注册的服务名称或者serviceId，默认会监控所有的服务
+                services: spring-boot-service,spring-cloud-zuul #指定需要监控的服务名称
+            ui:
+                title: 微服务监控  #ui名字
+            client:
+                url: http://hdp01:7777  #admin的url地址
     application:
         name: spring-cloud-zuul  #入口服务名字
     endpoints:
         web:
             exposure:
-                include: '*'
+                include: '*' #开发所有监控端口
     endpoint:
         health:
             show-details: always
