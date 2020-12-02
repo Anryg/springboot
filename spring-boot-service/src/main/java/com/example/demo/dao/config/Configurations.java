@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.dao.config;
 
 import com.ecwid.consul.v1.ConsulClient;
 import lombok.extern.slf4j.Slf4j;

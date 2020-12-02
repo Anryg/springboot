@@ -1,4 +1,4 @@
-package com.example.demo.aop.exception;
+package com.example.demo.aop.interceptor.exception;
 
 import com.alibaba.fastjson.JSONArray;
 import com.example.demo.model.StatisticsReturnEntity;

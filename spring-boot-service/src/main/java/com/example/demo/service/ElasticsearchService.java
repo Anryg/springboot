@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -7,7 +8,9 @@ import java.io.IOException;
  * @Auther: Anryg
  * @Date: 2020/9/14 16:05
  */
-public interface IESService {
+public interface ElasticsearchService {
 
     String simpleQuery(String index,String queryJson) throws IOException;
+
+    String aggQuery(@NotNull String index, @NotNull String aggField) throws IOException;
 }

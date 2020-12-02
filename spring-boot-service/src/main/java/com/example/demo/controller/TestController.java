@@ -2,19 +2,25 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.aop.annotation.LogAnnotation;
-import com.example.demo.config.ConfigFactory;
-import com.example.demo.config.ElasticsearchProperty;
+import com.example.demo.dao.config.ElasticsearchProperty;
+import com.example.demo.dao.es.DomainSearchRouteRepository;
+import com.example.demo.entity.es.DomainSearchRoute;
 import com.example.demo.model.StatisticsReturnEntity;
 import com.example.demo.model.ReturnResponseUtils;
-import com.example.demo.service.IESService;
+import com.example.demo.service.ElasticsearchService;
 import com.example.demo.service.TestService;
+import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @DESC:
@@ -29,6 +35,23 @@ import java.io.IOException;
 //@Profile()
 public class TestController {
 
+    @Autowired
+    //ElasticsearchRestTemplate esTemplate;
+    DomainSearchRouteRepository esRepository;
+    //BasicESService<DomainSearchRoute> domainSearchRouteService;
+
+    @Autowired
+    UserService userService;
+
+    /*@Autowired
+    HttpServletRequest request;*/
+
+    /*@Autowired
+    HttpSession httpSession;*/
+
+    /*@Autowired
+    RedisTemplate redisTemplate;*/
+
     @Value(value = "${kafka.hosts}")
     private String kafka;
     
@@ -39,7 +62,7 @@ public class TestController {
     private ElasticsearchProperty esProperty;
 
     @Autowired
-    IESService esService;
+    ElasticsearchService esService;
 
     @LogAnnotation(desc = "调用fun1...")
     @RequestMapping(path = "/fun1")
@@ -59,11 +82,6 @@ public class TestController {
         return service.service("xyz");
     }
 
-    @LogAnnotation(desc = "调用fun3")
-    @RequestMapping(path = "/fun3")
-    public Object fun3(){
-        return ConfigFactory.getBean("esPort");
-    }
 
     @LogAnnotation(desc = "调用fun4")
     @RequestMapping(path = "/fun4")
@@ -74,12 +92,6 @@ public class TestController {
         return result;
     }
 
-    @RequestMapping(path = "/fun5")
-    public String fun5(){
-        Object result = ConfigFactory.getBean("xxxx");
-        log.info("This is fun5..." + result);
-        return result.toString();
-    }
 
     @LogAnnotation(desc = "调用fun6...")
     @RequestMapping(path = "/fun6")
@@ -105,6 +117,39 @@ public class TestController {
     public String fun7(@RequestParam String str1, @RequestParam String str2){
         return str1 + str2;
     }
+
+    @LogAnnotation(desc = "调用fun10...")
+    @RequestMapping(path = "/fun10")
+    public DomainSearchRoute fun10(){
+        //return domainSearchRouteService.getCount();
+        //Map<String, Object> mapping = esTemplate.indexOps(IndexCoordinates.of("dns_client_request_rank")).getMapping();
+        //return mapping.toString();
+        Optional<DomainSearchRoute> doc = esRepository.findById("09a492fc60b4401e8237ed04196c81ee.fp.measure.office.com_AAAA");
+        return doc.get();
+    }
+
+    @LogAnnotation(desc = "调用fun11...")
+    @RequestMapping(path = "/fun11")
+    @Cacheable(cacheNames = "testCache",key = "fun11")
+    public String fun11(){
+        //JedisConnectionFactory jedisFactory = (JedisConnectionFactory) redisTemplate.getConnectionFactory();
+        //RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        //config.setDatabase(3);
+        //Object result = redisTemplate.opsForValue().get("domain-success");
+        return null;
+    }
+
+
+    @LogAnnotation(desc = "调用fun12...")
+    @RequestMapping(path = "/fun12")
+    public String fun12(HttpSession session){/**该调用就会显示声明session*/
+        Object sessionAttribute = session.getAttribute("abc");
+        if (null == sessionAttribute){
+            session.setAttribute("abc","Anryg");
+        }
+        return session.getAttribute("abc").toString();
+    }
+
 
 
 }

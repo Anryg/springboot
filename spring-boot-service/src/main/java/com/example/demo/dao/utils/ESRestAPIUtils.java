@@ -115,7 +115,7 @@ public class ESRestAPIUtils {
      * @return : 返回请求后的json字符串
      * @DESC: 可接受所有对于ES的查询操作，包括数据写入、删除、一般的条件查询和聚合查询
      */
-    private static String query(String queryJson, String method, String endpoint) throws IOException {
+    public static String query(String queryJson, String method, String endpoint) throws IOException {
         String resultJson = "";
         RestClient restClient = ESRestAPIUtils.getBuilder().build();
         //     .setMaxRetryTimeoutMillis(10 * 60 * 1000)/**设置查询超时时长，默认30秒*/.build();

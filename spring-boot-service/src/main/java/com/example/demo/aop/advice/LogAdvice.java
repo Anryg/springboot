@@ -14,6 +14,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @DESC: 定义需要织入的advice
@@ -37,7 +39,8 @@ public class LogAdvice {
         String requestAddr = request.getRemoteAddr();
         String absoluteMethodName = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
         String methodDesc = getMethodDesc(joinPoint);
-        String methodArgs = new Gson().toJson(joinPoint.getArgs());
+        //String methodArgs = new Gson().toJson(joinPoint.getArgs()); 有的参数对象不能这样转换
+        List<Object> methodArgs = Arrays.asList(joinPoint.getArgs());
 
         log.info("==========================Start============================");
         log.info("URL          :{}",requestURL);

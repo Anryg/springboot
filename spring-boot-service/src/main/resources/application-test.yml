@@ -1,4 +1,7 @@
 server: #For spring boot config only
+#    servlet:
+#        session:
+#            timeout: 60 #默认session过期时间,单位为秒, 但是在这里不生效，需要在代码中指定
     port: 8888 #也可以通过变量方式${port}传入，如：java -Dport=9999
 management:
     health:
@@ -14,6 +17,11 @@ management:
             show-details: always
 
 spring:
+    session: #session相关配置
+        store-type: redis #指定用Redis来进行session管理，如果依赖是Redis，则默认就是Redis
+        #redis:
+         #   flush-mode: on_save
+          #  namespace: spring-boot:session 这里指定没有生效
     boot:
         admin:
             client:

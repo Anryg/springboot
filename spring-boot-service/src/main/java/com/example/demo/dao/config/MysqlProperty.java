@@ -1,12 +1,13 @@
-package com.example.demo.config;
+package com.example.demo.dao.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -21,17 +22,17 @@ import javax.sql.DataSource;
 @RefreshScope
 public class MysqlProperty {
     private String driver_name;
-    private String url;
+    private String login_url;
     private String username;
     private String password;
 
     @Bean
-    public DataSource createDataSource(){
-        DruidDataSource ds = new DruidDataSource();
-        ds.setDriverClassName(driver_name);
-        ds.setUrl(url);
-        ds.setUsername(username);
-        ds.setPassword(password);
-        return ds;
+    public JdbcTemplate createJdbcTemplate(){
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(driver_name);
+        dataSource.setUrl(login_url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return new JdbcTemplate(dataSource);
     }
 }

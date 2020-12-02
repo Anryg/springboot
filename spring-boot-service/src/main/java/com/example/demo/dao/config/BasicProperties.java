@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.dao.config;
 
 /**
  * @DESC: 项目中需要用到的组件基础配置

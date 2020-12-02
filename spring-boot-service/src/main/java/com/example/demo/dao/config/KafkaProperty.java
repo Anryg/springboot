@@ -1,21 +1,22 @@
-package com.example.demo.config;
+package com.example.demo.dao.config;
 
-import com.example.demo.aop.annotation.LogAnnotation;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @DESC: Zookeeper的配置信息
+ * @DESC: Kafka配置信息
  * @Auther: Anryg
- * @Date: 2020/10/10 15:09
+ * @Date: 2020/10/10 15:07
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "zookeeper")
+@ConfigurationProperties(prefix = "kafka")
 @RefreshScope
-public class ZookeeperProperty {
+public class KafkaProperty {
     private String hosts;
-    private int port;
+    public String getHosts() {
+        return hosts;
+    }
 }
